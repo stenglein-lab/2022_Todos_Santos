@@ -393,7 +393,16 @@ The key Spades output files are:
 - scaffolds.fasta: scaffolds in FASTA format
 - assembly_graph.fastg:   de bruijn graphs used to create contigs.  Can be visualized using a tool like [Bandage](https://rrwick.github.io/Bandage/)
 
-Let's look at the contigs in contigs.fasta:  
+**Questions:**
+- In general, what is the difference between contigs and scaffolds?
+- This assembly produced a file named scaffolds.fasta.  How is it different than contigs.fasta (hint, run: `diff -s contigs.fasta  scaffolds.fasta`)
+- Did we provide any type of data that spades could have used to produce scaffolds?
+
+### What is making the snake sick?
+
+Recall that the big biological question we wanted to answer was: what is making this snake sick?  Let's look try to answer that!
+
+First, look at the contigs in contigs.fasta using the less command:  
 
 ```
 less contigs.fasta
@@ -401,14 +410,14 @@ less contigs.fasta
 
 The contigs are sorted in order of length.  Recall that these are contigs made from the reads that _didn't_ map to the boa constrictor genome. Let's try to figure out what some of the contigs are.
 
-Copy the first 3 contigs (the 3 longest contigs). Here is a command to get the first 3 contigs in one sequence per line fasta format:
+Copy the first 3 contigs (the 3 longest contigs). Here is a command to output the first 3 contigs in one sequence per line fasta format:
 ```
 seqtk seq -A contigs.fasta | head -6 
 ```
 
 Now, open a browser, navigate to the [NCBI blastn page](https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastn&PAGE_TYPE=BlastSearch&LINK_LOC=blasthome), and paste the sequences of the first 3 contigs into the search field.  Make sure that the megablast option is selected, and run the BLAST.  
 
-- What are the sequences?  Are you confident in your conclusions?  Do they make sense?
+- What are the contigs?  What type of organism are they from? Does this make sense biologically?
 
 
 ### Annotation:
