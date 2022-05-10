@@ -177,7 +177,7 @@ First, we need to *find* the boa constrictor genome.  As usual, there are few wa
    - You should see a table in the upper right corner showing linked records in various NCBI (Entrez) databases.
    - Click on the `Genome (1)` link in that table to go to the boa constrictor records in the NCBI Genome database 
 
-   - The linked page should say 'No items found', because the boa constrictor genome isn't actually in the NCBI Genome database<sup>[1](#myfootnote1)</sup>.  However, there is a mitochondrial genome. Let's download that.
+   - The linked page should say 'No items found', because the boa constrictor genome isn't actually in the NCBI Genome database<sup>[1](#myfootnote1)</sup>.  However, there is a **mitochondrial** genome. Let's download that.
    - Click on "See also 1 organelle- and plasmid-only records matching your search"
    - In the Replicon Info table, note the link to the boa constrictor mtDNA genome sequence (NC_007398.1)
    - Click on this 'NC_007398.1' RefSeq link
@@ -186,235 +186,26 @@ Now we need to download the sequence.  We'll do this through the browser.  In th
 
 - Click Send->Complete Record->File->Format[FASTA]->Create File
 
-You should have downloaded a fasta file of ~19 kb, named sequence.fasta, or something like that.  
+This will download this file in fasta format to your laptop.  You should have downloaded a fasta file of ~19 kb, named sequence.fasta, or something like that.  
 
-Now download the sequence in GenBank format too.  Note that this file is larger (~42 kb), because it contains annotation as well as the actual sequence.
+Next, download the sequence in GenBank format too.  Note that this file is larger (~42 kb), because it contains annotation as well as the actual sequence.
 
-Note that the downloaded files have unhelpful names: `sequence.fasta` and `sequence.gb` or similar.  Move these files into your snake_exercise folder and rename them something useful:
+Note that the downloaded files have unhelpful names: `sequence.fasta` and `sequence.gb` or similar.  Rename these files to NC_007398.fasta and NC_007398.gb
 
-make sure you are in the snake_exercise folder
+Use a text editor (Notepad++ or BBEdit or something similar) to inspect the files you've just downloaded.  Note that the fasta file does not have any annotation, but the genbank file does.  As we will see, both of these formats will be useful.
+
+Use Cyberduck or FileZilla to transfer these files to the server and move them to the snake_exercise directory.
+
+At this point, you should be on the thoth01 server in the snake_exercise folder and there should be a file named `NC_007398.fasta`
 ```
+# should be in snake_exercise folder
 pwd
-```
 
-If you are not in the snake_exercise directory, you can change to their by running: 
-```
-cd ~/snake_exercise
-```
-
-use the mv command to move and rename the files (_change if downloaded names are different_)
-```
-mv ~/Downloads/sequence.fasta ./boa_mtDNA.fasta
-mv ~/Downloads/sequence.gb ./boa_mtDNA.gb
-```
-
-You can use the cat (or less) commands to output the contents of these files:
-```
-# cat outputs the contents of a file all at once
-cat boa_mtDNA.fasta
-cat boa_mtDNA.gb
-
-# less allows you to page through files
-less boa_mtDNA.fasta
-less boa_mtDNA.gb
-```
-
-Hint: press `space` to advance a page in less and press `q` to exit
-
-
-We want these files in Geneious too.  Drag them into Geneious:  
- - Open Geneious
- - Create a new folder in Geneious 
- - Drag and drop these files into Geneious
-
-
-### Additional, time-permitting exercises 
-
-**1. Coverage and multiplexing calculations:**
-
-You are interested in using NGS to study a collection of related bacterial isolates.  These bacteria have estimated genome sizes of 5 Mbp (5x10<sup>6</sup> bp).  You want to do whole genome sequencing of as many isolates as possible in a single Illumina MiSeq run using paired-end 250 base sequencing (i.e., each of the two paired reads will be 250 bp long).  MiSeq runs generate ~20 million read pairs per paired-end run.  
-
-Questions:
-
-  1. You would like to achieve 100x coverage for each genome.  How many genomes could you multiplex in your MiSeq run?  
-
-  2. Imagine instead that you'll be doing single-end 150 base sequencing instead of paired-end 250 base sequencing.  How many isolates could you multiplex on a single MiSeq run now?
-
-
-**2. Download another genome a different way:**
-
-There isn't a boa constrictor genome in NCBI :cry:.  Let's download a bacterial genome instead: that of [_Chlamydia psittaci_](https://en.wikipedia.org/wiki/Chlamydophila_psittaci).  This will allow us to practice finding and downloading and processing a genome using slightly different approaches.
-
-To find the _C. psittaci_ genome, we will go through the NCBI Genome database.  Navigate to:
-
-https://www.ncbi.nlm.nih.gov/genome/
-
-Search for `Chlamydia psittaci`. This will take you to the genome overview page for this organism. 
-
-You will notice a number of things on this overview page: 
-- There are actually 61 _C. psittaci_ genomes.  One of these has been designated a "Representative genome".  We'll download this one. 
-- There are a number of paths to the actual genome sequence(s).  One simple path is at the top of the page, where there are links to "Download sequences in FASTA format."  
-   - Hover over the link to download the genome sequence in FASTA format.  Note that this link points to this URL:
-
-ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/204/255/GCF_000204255.1_ASM20425v1/GCF_000204255.1_ASM20425v1_genomic.fna.gz
-
-[FTP](https://en.wikipedia.org/wiki/File_Transfer_Protocol) is a protocol for transferring files between computers.
-
-If you click on this link, you can download it to your laptop through your browser.  You can also download it directly from the command line using a utility like [curl](https://en.wikipedia.org/wiki/CURL).  Open your browser and download the C. psittaci genome using curl:
-```
-curl -O ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/204/255/GCF_000204255.1_ASM20425v1/GCF_000204255.1_ASM20425v1_genomic.fna.gz
-```
-
-Confirm you've downloaded the genome sequence. You should see a file named: GCF_000204255.1_ASM20425v1_genomic.fna.gz.
-```
+# should see a 19 kb file named NC_007398.fasta
 ls -lh 
 ```
 
-The .gz file extension means this file is gzipped (compressed). Decompress it using gunzip:
-```
-gunzip GCF_000204255.1_ASM20425v1_genomic.fna.gz
-```
-
-The file should now be named GCF_000204255.1_ASM20425v1_genomic.fna.gz, which should be 1.1 Mb uncompressed
-```
-ls -lh
-```
-
-Look at the first 10 lines of the file:
-```
-head GCF_000204255.1_ASM20425v1_genomic.fna
-```
-
-Look at the last 10 lines of the file:
-```
-tail GCF_000204255.1_ASM20425v1_genomic.fna
-```
-You can see that the file consists of a header line and the genome sequence, with no associated annotation.
-
-
-#### Downloading genome annotation
-You will note at the top of the overview page that you can also download annotation for this genome, either as an annotated version of the genome (in Genbank format), or as a file containing the annotations (in [GFF](https://en.wikipedia.org/wiki/General_feature_format), or tabular formats)
-
-- Download the annotated genome in Genbank format, and drag and drop it into Geneious.  
-
-
-
-
-
-
-<br>
-<br>
-<br>
-<br>
-
----
-Footnotes
-
-<a name="myfootnote1">1</a>: The boa constrictor genome _was_ sequenced as part of the [Assemblathon 2 competition](https://www.ncbi.nlm.nih.gov/pubmed/23870653), and the (unannotated) assemblies can be found [here](http://gigadb.org/dataset/100060), which you can find by Google searching "boa constrictor genome".  So Google searching is not a bad idea.
-
-
-
-
-
-
-
-
-
-
-## In this exercise, we will learn how to create an index from a reference sequence, then map reads to that reference sequence
-
-### [Last time] Downloading an SRA dataset
-
-Last week, you downloaded one of the NGS datasets reported in [this paper](http://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1004900)
-
-This dataset was generated by performing shotgun sequencing of total RNA from the liver of a boa constrictor that was diagnosed with [inclusion body disease](https://en.wikipedia.org/wiki/Inclusion_body_disease). 
-
-![Python with IBD](IBD.png)
-
-You also used cutadapt to trim off low quality and adapter-derived parts of reads.
-
-### Downloading the boa constrictor (mitochondrial) genome.
-
-The NGS data we are working with came from boa constrictor liver RNA.  We will map the reads in this dataset to the boa constrictor mitochondrial genome sequence to demonstrate read mapping.
-
-First, we need to *find* the boa constrictor mitochondrial genome sequence.  As usual, there are few ways we could go about this:
-
-1. navigate through the NCBI [Taxonomy database](https://www.ncbi.nlm.nih.gov/taxonomy/)
-2. navigate through the NCBI [Genome database](https://www.ncbi.nlm.nih.gov/genome/)
-3. navigate through another genome database, like [Ensembl](http://www.ensembl.org/index.html) or [UCSC](https://genome.ucsc.edu/)
-4. google 'boa constrictor genome sequence'  (not a terrible way to do it)
-
-- Let's choose option 1, and go through the NCBI Taxonomy database.  Navigate to https://www.ncbi.nlm.nih.gov/taxonomy/
-   - Search for `boa constrictor`.
-   - Click on Boa constrictor link, then click the Boa constrictor link again
-   - You should see a table in the upper right corner showing linked records in various NCBI (Entrez) databases.
-   - Click on the `Nucleotide` link in that table to go to boa constrictor sequences in the NCBI Nucleotide database
-
-   - There are ~600 boa constrictor nucleotide sequences in this database.  We want the mitochondrial genome, which happens to be the only nucleotide sequence in the NCBI RefSeq database.
-   - Click on "RefSeq" filter on the left hand side of the page.
-   - You should see a link to the boa constrictor mitochondrial genome sequence.
-   - Click on this 'NC_007398.1' RefSeq link
-
-Now we need to download the sequence.  We'll do this through the browser.  In the upper right hand corner of the page, note the 'Send' drop down
-
-- Click Send->Complete Record->File->Format->FASTA->Create File
-
-You should have downloaded a fasta file of ~19 kb, named sequence.fasta, or something like that.
-
-Now download the sequence in GenBank format too.  Note that this file is larger (~42 kb), because it contains annotation as well as the actual sequence.
-
-Note that the downloaded files have unhelpful names: `sequence.fasta` and `sequence.gb` or similar.  You need to do two things with these downloaded files:
-
-1. Rename these files to something more descriptive than sequence.fasta and sequence.gb.  Rename these files to:
-
-- boa_mtDNA.fasta
-- boa_mtDNA.gb
-
-2. We want these files in Geneious too.  Drag them into Geneious:
- - Open Geneious
- - Create a new folder in Geneious
- - Drag and drop these files into Geneious
-
-3. Transfer these files to the thoth01 server so we can work with them there.  To do this use sftp:
-
-```
-# change to the directory on your laptop where these downloaded files are
-cd directory_where_your_files_are
-
-# open an sftp connection to thoth01
-sftp your_eid@thoth01.cvmbs.colostate.edu
-
-# once connected via sftp, use the put command to transfer the files
-put boa_mtDNA*
-```
-
-Now open an ssh connection to thoth01:
-```
-ssh your_eid@thoth01.cvmbs.colostate.edu
-```
-
-Once connected to thoth01, use the `mv` command to move these files to the directory where your trimmed fasta files are.
-
-
-### Once you have these files on the thoth01 server
-
-Change to the directory where your trimmed fastq files are and make sure these new boa_mtDNA files are in the same directory.
-
-Let's inpsect the contents of these files.  You can use the cat (or less) commands to output the contents of these files:
-```
-# cat outputs the contents of a file all at once
-cat boa_mtDNA.fasta
-cat boa_mtDNA.gb
-
-# less allows you to page through files
-less boa_mtDNA.fasta
-less boa_mtDNA.gb
-```
-
-Hint: press `space` to advance a page in less and press `q` to exit
-
-What is the difference between the genbank and FASTA format versions of this sequence?
-
+## Map reads to the boa constrictor mitochondrial genome
 
 ### Create a bowtie index from the boa constrictor mitochondrial genome sequence
 
@@ -424,68 +215,57 @@ There are a variety of other good read mapping tools, such as [BWA](https://gith
 
 The first step will be to create an index of our reference sequence (the boa constrictor mitochondrial genome).
 
-Make sure you are in the right directory (our working directory):
-```
-pwd
-```
-
-Now confirm that the boa constrictor mtDNA sequence file is there and in FASTA format: 
-```
-# should see: boa_mtDNA.fasta and 2 trimmed fastq (SRR1984309_1_trimmed.fastq SRR1984309_2_trimmed.fastq)
-ls -lh    
-```
-
 Now, we'll use the bowtie2-build indexing program to create the index.  This command takes 2 arguments: 
 (1) the name of the fasta file containing the sequence(s) you will index
 (2) the name of the index (can be whatever you want)
 
 ```
-# create a bowtie2 index.  Name it boa_mtDNA_bt_index
-bowtie2-build boa_mtDNA.fasta boa_mtDNA_bt_index 
+# create a bowtie2 index.  Name it NC_007398_bt_index
+bowtie2-build NC_007398.fasta NC_007398_bt_index 
 ```
 
-Confirm that you built the index.  You should see six files with names ending in bt2, like boa_mtDNA_bt_index.3.bt2
+Confirm that you have successfuly built the index.  Bowtie2 indexes are actually composed of 6 files.  You should see six files with names ending in bt2, like NC_007398_bt_index.3.bt2
 ```
+# should see six bowtie2 index files
 ls -lh
 ```
 
-Note that this index building went very fast for a small genome like the boa mtDNA, but can take much longer (hours) for Gb-sized genomes.
-
+Note that this index building went very fast for a small genome like the boa mtDNA, but can take much longer (hours) for Gb-sized genomes.  But at least you only need to build an index once per reference sequence.
 
 ### Mapping reads in the SRA dataset to the boa constrictor mitochondrial genome 
 
-Now that we've created the index, we can map reads to the boa mtDNA.  We'll map our Trimmomatic-trimmed paired reads to this sequence, as follows:
+Now that we've created the index, we can map reads to the boa mtDNA.  We'll map our fastp-trimmed paired reads to this sequence, as follows:
 
 ```
-bowtie2 -x boa_mtDNA_bt_index \
+bowtie2 -x NC_007398_bt_index \
    -1 SRR1984309_1_trimmed.fastq \
    -2 SRR1984309_2_trimmed.fastq \
    --no-unal \
    --threads 8 \
-   -S SRR1984309_mapped_to_boa_mtDNA.sam
+   -S SRR1984309_mapped_to_NC_007398.sam
 ```
 
-Let's deconstruct this command line (note: the comments will screw up this command: don't copy and paste from this box): 
+Let's deconstruct this command line:
+
+Option | Meaning
+--- | ---
+-x NC_007398_bt_index   |  -x: name of index you created with bowtie2-build
+-1 SRR1984309_1_trimmed.fastq   | name of the paired-read FASTQ file 1
+-2 SRR1984309_2_trimmed.fastq   | name of the paired-read FASTQ file 2
+--no-unal   | don't output unmapped reads to the SAM output file (this will make the sam file _much_ smaller)
+--threads 8   | since this server has multiple processers, run on 8 processors to go faster
+-S SRR1984309_mapped_to_NC_007398.sam   | name of output file in SAM format
+
+Bowtie will output some information about what percentage of the reads aligned.
+ - What percentage of the reads aligned to the boa constrictor mitochondrial genome?
+ - Does that number make sense?
+
+The main output file from bowtie (and other read mappers) is a file in [sam format](https://en.wikipedia.org/wiki/SAM_(file_format)), which describes how reads aligned to the reference sequence.  The output file from our command is `SRR1984309_mapped_to_NC_007398.sam`
+
+Sam is a plain text format, so you can look at the first 20 lines by running this command:
+
 ```
- bowtie2
-   -x boa_mtDNA_bt_index         # -x: name of index you created with bowtie2-build
-   -1 SRR1984309_1_trimmed.fastq      # name of the paired-read FASTQ file 1
-   -2 SRR1984309_2_trimmed.fastq      # name of the paired-read FASTQ file 2
-   --no-unal            # don't output unmapped reads to the SAM output file (will make it _much_ smaller
-   --threads 8            # since the server has multiple processers, run on 8 processors to go faster
-   -S SRR1984309_mapped_to_boa_mtDNA.sam   # name of output file in SAM format
-```
-
-- Some questions to consider:
-  - What percentage of reads mapped to the boa mitochondrial genome?
-  - Does this make sense biologically?  Remember that this is total RNA from snake liver tissue.
-
-
-The output file SRR1984309_mapped_to_boa_mtDNA.sam is in [SAM format](https://en.wikipedia.org/wiki/SAM_(file_format)).  This is a plain text format, so you can look at the first 20 lines by running this command:
-
-
-```
-head -20 SRR1984309_mapped_to_boa_mtDNA.sam      
+head -20 SRR1984309_mapped_to_NC_007398.sam
 ```
 
 You can see that there are several header lines beginning with `@`, and then one line for each mapped read.  See [here](http://genome.sph.umich.edu/wiki/SAM) or [here](https://samtools.github.io/hts-specs/SAMv1.pdf) for more information about interpreting SAM files.
@@ -500,11 +280,11 @@ Answer the following questions about the first mapped read:
 
 Geneious provides a nice graphical interface for visualizing the aligned reads described in your SAM file.   Other tools for visualizing this kind of data include [IGV](http://software.broadinstitute.org/software/igv/) and [Tablet](https://ics.hutton.ac.uk/tablet/)
 
-First, you need to transfer the SRR1984309_mapped_to_boa_mtDNA.sam file from thoth01 to your computer.  Use sftp or cyberduck to do this.
+First, you need to transfer the SRR1984309_mapped_to_NC_007398.sam file from thoth01 to your computer.  Use sftp or cyberduck to do this.
 
 Second, you need to have your reference sequence in Geneious, preferably with annotations.  You can do this 2 ways:
 
-1. Drag and drop the boa_mtDNA.gb file into a folder in Geneious
+1. Drag and drop the NC_007398.gb file into a folder in Geneious
 2. Download the file directly into Genious, using the NCBI->Nucleotide interface (search for NC_007398.1).  Once downloaded, drag from the NCBI download folder into another folder in Geneious.  
 
 Once you have the boa constrictor mitochondrial genome in a folder in Geneious, you can drag and drop the SAM file that bowtie2 output into the same folder.  Geneious will tell you that it 'can't find the sequence it needs in the selected file'.  It is telling you it is trying to find the reference sequence to which you aligned reads.  Answer: 'Find a sequence with the same name in this Geneious folder' or 'Use one of the selected sequences' (after selecting the boa mtDNA sequence).
@@ -526,3 +306,10 @@ Once you have the boa constrictor mitochondrial genome in a folder in Geneious, 
   - Is it possible that reads that derive from the boa constrictor nuclear genome are mapping to this sequence?
   - How would you prevent nuclear reads from mapping to the mitochondrial genome?
   - Can you identify mapped read pairs?
+
+
+---
+Footnotes
+
+<a name="myfootnote1">1</a>: The boa constrictor genome _was_ sequenced as part of the [Assemblathon 2 competition](https://www.ncbi.nlm.nih.gov/pubmed/23870653), and the (unannotated) assemblies can be found [here](http://gigadb.org/dataset/100060), which you can find by Google searching "boa constrictor genome".  So Google searching is not a bad idea.
+
