@@ -135,7 +135,9 @@ NGS reads can have problems.  Two main problems are:
 We will run this fastp command to trim our reads:
 
 ```
-fastp -i SRR1984309_1.fastq -I SRR1984309_2.fastq -o SRR1984309_1_trimmed.fastq -O SRR1984309_2_trimmed.fastq --length_required 100
+fastp -i SRR1984309_1.fastq -I SRR1984309_2.fastq \
+  -o SRR1984309_1_trimmed.fastq -O SRR1984309_2_trimmed.fastq \
+  --length_required 100
 ``` 
 
 fastp automatically detects and removes adapter and low quality bases from NGS reads.
