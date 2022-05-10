@@ -191,13 +191,13 @@ Now we need to download the sequence.  We'll do this through the browser.  In th
 
 This will download this file in fasta format to your laptop.  You should have downloaded a fasta file of ~19 kb, named sequence.fasta, or something like that.  
 
-Next, download the sequence in GenBank format too.  Note that this file is larger (~42 kb), because it contains annotation as well as the actual sequence.
+Rename this file to `NC_007398.fasta`
 
-Note that the downloaded files have unhelpful names: `sequence.fasta` and `sequence.gb` or similar.  Rename these files to NC_007398.fasta and NC_007398.gb
+Next, download the sequence annotation in GFF3 format.   Rename the GFF3 file to NC_007398.fasta
 
-Use a text editor (Notepad++ or BBEdit or something similar) to inspect the files you've just downloaded.  Note that the fasta file does not have any annotation, but the genbank file does.  As we will see, both of these formats will be useful.
+Use a text editor (Notepad++ or BBEdit or something similar) to inspect the files you've just downloaded.  
 
-Use Cyberduck or FileZilla to transfer these files to the server and move them to the snake_exercise directory.
+Use Cyberduck or FileZilla to transfer the fasta files to the server and move them to the snake_exercise directory.
 
 At this point, you should be on the thoth01 server in the snake_exercise folder and there should be a file named `NC_007398.fasta`
 ```
