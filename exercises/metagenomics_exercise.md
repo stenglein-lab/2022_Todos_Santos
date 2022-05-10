@@ -3,18 +3,20 @@
 Todos Santos Genomics and Bioinformatics 2022
 ---
 
+Today we will perform a metagenomics workflow.  We will be working on a different server than the past two days.  This server's name is `thoth01.cvmbs.colostate.edu`
+
 ## First: Install conda environment with software we'll need
 
-Installing bioinformatics software can be challenging!  [Conda](http://anaconda.org) is a tool that facilitate installing software and making sure the installed software works together.  
+Installing bioinformatics software can be challenging!  We will again use [Conda](http://anaconda.org) to install the software we need.
 
 You will create a new conda environment that includes the tools you'll need for the remainder of this exercise on the thoth01 server.  The tools are listed in [this file](https://github.com/stenglein-lab/2022_Todos_Santos/blob/main/exercises/bio_tools.yaml)
 
 Login to the thoth01 server:
 ```
-ssh your_usernam@thoth01.cvmbs.colostate.edu
+ssh your_username@thoth01.cvmbs.colostate.edu
 ```
 
-The username and password are the same ones you've been using for the rna.biology.colostate.edu server.
+The username and password are the same as for the `rna.biology.colostate.edu` server.
 
 Create a new conda environment named bio_tools by running this command
 ```
@@ -34,15 +36,6 @@ conda activate bio_tools
 
 
 ## Second: Downloading the data we need
-
-## In this exercise, you will download, process, and evaluate NGS datasets and genome sequences.  You will:
-
-* Download an NGS dataset from the SRA
-* Use the FASTQC tool to assess the quality of the reads in the dataset
-* Use cutadapt to remove low quality parts of the reads1
-* Find and download genome sequences and associated annotation from NCBI
-
----
 
 ### Downloading an SRA dataset
 
@@ -127,7 +120,7 @@ These datasets have already been pre-cleaned, so they look pretty good.  Note th
 
 ---
 
-### Read trimming with cutadapt
+### Read trimming 
 
 NGS reads can have problems.  Two main problems are:
 
@@ -299,7 +292,7 @@ Other tools for visualizing this kind of data include [Geneious](https://www.gen
 First, we need to transfer the .sam file from the server to your desktop.  Transfer SRR1984309_mapped_to_NC_007398.sam to your laptop using Cyberduck of FileZilla.  
 
 
-### Load mapped reads into Tablet:
+#### Load mapped reads into Tablet:
 
 You will need to load 3 pieces of information into Tablet: 
 1. The mapped reads in SAM format
@@ -415,10 +408,11 @@ Now, open a browser, navigate to the [NCBI blastn page](https://blast.ncbi.nlm.n
 
 ### Annotation:
 
-Viral genomes are small and easy to annotate compared to larger genomes like bacterial or eukaryotic genomes.  Let's identify open reading frames in the viral genome sequences you identified.  Do this by pasting the viral contigs one at a time into NCBI's ORF finder software, [here](https://www.ncbi.nlm.nih.gov/orffinder/).  
+Viral genomes are small and easy to annotate compared to larger genomes like bacterial or eukaryotic genomes.  Let's identify open reading frames in the viral genome sequences you identified.  Do this by pasting the viral contigs one at a time into NCBI's ORF finder software, [here](https://www.ncbi.nlm.nih.gov/orffinder/).  Set the minimum ORF size to 300 bp.
 
-This is a snake-infecting arenavirus.  The expected structure of arenavirus genome segments can be seen on [this page](https://viralzone.expasy.org/501).  Can you find the expected genes in the virus L and S segments?
+This is a snake-infecting arenavirus.  The expected structure of arenavirus genome segments can be seen on [this page](https://viralzone.expasy.org/501).  Can you find the expected genes in the Large and Small virus genome segments?
 
+To validate that you have identified the expected ORFs (genes), copy the predicted protein sequences and use the [BLASTP](https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastp&PAGE_TYPE=BlastSearch&BLAST_SPEC=&LINK_LOC=blasttab&LAST_PAGE=blastn) tool to identify the most closely related protein sequences in NCBI.
 
 
 #### Additional, time-permitting exercise
