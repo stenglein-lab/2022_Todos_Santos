@@ -272,7 +272,7 @@ The main output file from bowtie (and other read mappers) is a file in [sam form
 Sam is a plain text format, so you can look at the first 20 lines by running this command:
 
 ```
-head -20 SRR1984309_mapped_to_NC_007398.sam
+head SRR1984309_mapped_to_NC_007398.sam
 ```
 
 You can see that there are several header lines beginning with `@`, and then one line for each mapped read.  See [here](http://genome.sph.umich.edu/wiki/SAM) or [here](https://samtools.github.io/hts-specs/SAMv1.pdf) for more information about interpreting SAM files.
