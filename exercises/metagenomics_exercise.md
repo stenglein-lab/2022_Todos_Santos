@@ -277,10 +277,10 @@ head SRR1984309_mapped_to_NC_007398.sam
 
 You can see that there are several header lines beginning with `@`, and then one line for each mapped read.  See [here](http://genome.sph.umich.edu/wiki/SAM) or [here](https://samtools.github.io/hts-specs/SAMv1.pdf) for more information about interpreting SAM files.
 
-Answer the following questions about the first mapped read:
-- What position in the mtDNA sequence did it map to?
-- What is the mapping quality for this read's mapping?
-- What does this mapping quality score indicate?  
+Answer the following questions about the **first mapped read**:
+- What position in the mtDNA sequence did the first mapped read map to? (SAM column 4)
+- What is the mapping quality for this read's mapping? (SAM column 5)
+- What does this particular mapping quality score indicate?  
 
 
 ### Visualizing aligned (mapped) reads in Tablet
@@ -327,9 +327,6 @@ Some questions to consider when viewing the alignment:
 
 We have practiced mapping to a reference sequence.  Imagine that we don't have a reference sequence.  In that case, we'd need to perform de novo assembly.  
 
-![assembly](./assembly.png)
-**Genome assembly is like doing a jigsaw puzzle when you don't know what the picture looks like.  Image credit: Keith Bradnam, UC Davis**
-
 There are a variety of de novo assemblers with different strengths and weaknesses.  We're going to use the [SPAdes assembler](http://cab.spbu.ru/software/spades/) to assemble the reads in our dataset that don't map to the boa constrictor genome. First, let's map the reads in our dataset to the _entire_ boa constrictor genome, not just the mitochondrial genome.
 
 The instructors have already downloaded an assembly of the boa constrictor genome from [here](http://gigadb.org/dataset/100060) and made a bowtie2 index, which can be found in the TodosSantos directory in your home directories.  We could have you make an index yourself, but that would take a long time (~30 min) for a Gb genome like the boa constrictor's.  The boa constrictor genome index is named boa_constrictor_bt_index.
@@ -350,12 +347,18 @@ Now, we'll run bowtie2 to map reads to the *entire* boa genome.  This time we'll
 ```
 bowtie2 -x boa_constrictor_bt_index --local \
    -q -1 SRR1984309_1_trimmed.fastq  -2 SRR1984309_2_trimmed.fastq \
-   --no-unal --threads 4 -S SRR1984309_mapped_to_boa_genome.sam --un-conc SRR1984309_not_boa_mapped.fastq
+   --no-unal --threads 8 \
+   -S SRR1984309_mapped_to_boa_genome.sam \
+   --un-conc SRR1984309_not_boa_mapped.fastq
 ```
 
-You should see that ~90% of the reads aligned to the boa constrictor genome sequence (overall alignment rate), leaving ~10% in the files that contain the non-mapping reads: `SRR1984309_not_boa_mapped.1.fastq` and `SRR1984309_not_boa_mapped.2.fastq`
+You should see that ~90% of the reads aligned to the boa constrictor genome sequence (overall alignment rate), leaving ~10% in the files that contain the non-mapping reads: `SRR1984309_not_boa_mapped.1.fastq` and `SRR1984309_not_boa_mapped.2.fastq`.  These contain reads that **did not map** to the boa constrictor genome.
 
-How many non-mapping reads remain in these files?
+**Question:**
+- How many non-mapping read pairs remain in these files?
+- What are the possible sources of these reads that did not map to the boa constrictor genome?
+
+### Assembly of remaining reads
 
 We will use these non-mapping reads as input to our de novo SPAdes assembly.  Run SPAdes as follows:
 
@@ -363,7 +366,7 @@ We will use these non-mapping reads as input to our de novo SPAdes assembly.  Ru
 spades.py   -o SRR1984309_spades_assembly \
    --pe1-1 SRR1984309_not_boa_mapped.1.fastq \
    --pe1-2 SRR1984309_not_boa_mapped.2.fastq \
-   -m 12 -t 4
+   -m 12 -t 8
 ```
 
 Command line options explained:
@@ -373,7 +376,7 @@ Option   |Meaning
 -o  SRR1984309_spades_assembly |name of directory (folder) where SPAdes output will go
 --pe1-1 SRR1984309_not_boa_mapped.1.fastq |name of read1 input file
 --pe1-2 SRR1984309_not_boa_mapped.2.fastq |name of read2 input file
--m 12 -t 4 |use 12 Gb of RAM and 4 cores 
+-m 12 -t 8 |use 12 Gb of RAM and 8 cores 
 
 SPAdes will output a bunch of status messages to the screen as it runs the assembly.  
 
