@@ -212,7 +212,7 @@ ls -lh
 
 Now we will learn how to map reads to a reference sequence.  Read mapping is fundamental to a variety of analyses, including RNA-Seq, SNP identification (variant calling), etc.
 
-![mapping](./mapping.jpg)
+<img src="mapping.jpg" alt="Read mapping overview> insert size" width="600"/>
 
 ### Create a bowtie index from the boa constrictor mitochondrial genome sequence
 
