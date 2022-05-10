@@ -58,7 +58,7 @@ https://www.ncbi.nlm.nih.gov/pubmed/25993603
 
 Scroll down and find the 'Related information' section of the bottom right of the page.  Click on the SRA link.  This shows the SRA datasets associated with this paper.  Locate the dataset named `shotgun sequencing of tissue from snake_7`.  To download the NGS data, we need to note the accession number (SRR number) for this dataset, which is: SRR1984309.
 
-<img src="snake_7_SRR_number.png" alt="SRR number needed to download SRA datasets" width="300"/>
+<img src="snake_7_SRR_number.png" alt="SRR number needed to download SRA datasets" width="400"/>
 
 We're going to download this dataset using the command line tool fastq-dump, part of the [SRA toolkit](https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=toolkit_doc).  First, let's create a directory (folder) in which to work on the thoth01 server.. 
 
@@ -88,7 +88,8 @@ We will download the dataset using the fastq-dump tool, part of the [SRA toolkit
 To run fasta-dump, you just need to specify the run # (the SRR#) of the dataset you want.  Recall that our run # is SRR1984309. The --split-files option of the command will create 2, synchronized files for the paired reads
 
 ```
-fastq-dump SRR1984309 --split-file
+# download the NGS dataset from SRA run # SRR1984309
+fastq-dump --split-files SRR1984309 
 ```
 
 Confirm that you downloaded the files.  You should see files named SRR1984309_1.fastq and SRR1984309_2.fastq that are each 44 Mb.
@@ -99,12 +100,11 @@ ls -lh
 
 Look at the first 20 lines of the fastq files using the head command
 ```
-head -20 SRR1984309_1.fastq SRR1984309_2.fastq
+head -8 SRR1984309_1.fastq SRR1984309_2.fastq
 ```
 
 **Questions:**
-- What is on each of the 4-lines that make up each sequence?  (See: [FASTQ format](https://en.wikipedia.org/wiki/FASTQ_format))  
-- The quality scores for this dataset are in Illumina 1.9 format.  What is the maximum quality score for each basecall?  How does that relate to the estimated probability that a basecall is wrong?
+- What is on each of the 4-lines that make up each fastq sequence?  (See: [FASTQ format](https://en.wikipedia.org/wiki/FASTQ_format))  
 - How many reads are in each file?  (Hint: the `wc -l name_of_file` command will tell you the number of lines in the file)
 
 ---
@@ -129,33 +129,21 @@ These datasets have already been pre-cleaned, so they look pretty good.  Note th
 
 ### Read trimming with cutadapt
 
-MARKMARK
-[Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic) is a tool that can be used to trim low quality and adapter sequences from NGS reads.  It's always a good idea to trim raw NGS reads.
-
-Trimmomatic has _a lot_ of options, described [here](http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/TrimmomaticManual_V0.32.pdf)
+[fastp](https://github.com/OpenGene/fastp) is a tool that can be used to trim low quality and adapter sequences from NGS reads.  It is essential to trim adapter sequences and low quality bases off of raw NGS reads.
 
 We will run this command to trim our reads:
 
 ```
-java -jar ~/Desktop/GDW_Apps/Trimmomatic-0.39/trimmomatic-0.39.jar PE  SRR1984309_1.fastq SRR1984309_2.fastq SRR1984309_1_trimmed.fastq SRR1984309_1_trimmed_unpaired.fastq SRR1984309_2_trimmed.fastq SRR1984309_2_trimmed_unpaired.fastq ILLUMINACLIP:../Desktop/GDW_Apps/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10 LEADING:20 TRAILING:20 SLIDINGWINDOW:4:20 MINLEN:60 
+fastp -i SRR1984309_1.fastq -I SRR1984309_2.fastq -o SRR1984309_1_trimmed.fastq -O SRR1984309_2_trimmed.fastq --length_required 100
 ``` 
 
+fastp automatically detects and removes adapter sequences from NGS reads.
 
-Breaking this down:
-- Names of input and output files: SRR1984309_1.fastq etc.    
-- Trim Nextera adapter sequences (ILLUMINACLIP:...NexteraPE-PE.fa:2:30:10)
-- Remove low quality bases from the 5' ends of the reads (below quality 20) (LEADING:20)
-- Remove low quality bases from the 3' ends of the reads (below quality 20) (TRAILING:20)
-- Trim reads if internal low quality bases (SLIDINGWINDOW:4:20)
-- Remove reads shorter than 60 bases (MINLEN:60)
-
-After you've completed trimming, look to see that the trimmed files exist in your directory:
+Here, we are discarding reads shorter than 100 bases after trimming.
 
 ```
 ls -lh
 ```
-
-- how many reads remain in the trimmed fastq files?
 
 Now, we can use fastqc to analyze the trimmed datasets:
 ```
@@ -168,7 +156,7 @@ Transfer the fastq html files using sftp to your computer and open them html fil
 - Did the quality of the basecalls improve?
 - Did the trimming remove Nextera adapters?
 
-Note: There are other trimming tools that you may find easier to use, such as BBTrim
+Note: There are many trimming tools. Other popular trimming tools include [BBDuk](https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/bbduk-guide/) and [cutadapt](https://cutadapt.readthedocs.io/en/stable/).
 
 ---
 
