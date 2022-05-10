@@ -269,7 +269,7 @@ Bowtie will output some information about what percentage of the reads aligned.
 
 The main output file from bowtie (and other read mappers) is a file in [sam format](https://en.wikipedia.org/wiki/SAM_(file_format)), which describes how reads aligned to the reference sequence.  The output file from our command is `SRR1984309_mapped_to_NC_007398.sam`
 
-Sam is a plain text format, so you can look at the first 20 lines by running this command:
+Sam is a plain text format, so you can look at the first 10 lines by running this command:
 
 ```
 head SRR1984309_mapped_to_NC_007398.sam
